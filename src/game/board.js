@@ -32,14 +32,12 @@ export function createBoard(target) {
     }
   }
   cells.push({ id: 'eq', type: 'equals', value: '=', interactive: false })
-  cells.push({ id: 'pad-l', type: 'pad', value: '', interactive: false })
   cells.push({
     id: 'result',
     type: 'result',
     value: String(target),
     interactive: false
   })
-  cells.push({ id: 'pad-r', type: 'pad', value: '', interactive: false })
   return cells
 }
 

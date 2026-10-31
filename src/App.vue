@@ -14,6 +14,7 @@
         </div>
         <div class="timer-row">
           <div
+            v-if="gameStated"
             class="timer"
             :class="{
               danger: (secondsLeft <= 10 && !roundOver) || (roundOver && !roundWon),
@@ -68,7 +69,8 @@ import { generateRound, roundTime } from './game/generate.js'
 const level = ref(1)
 const score = ref(0)
 const secondsLeft = ref(roundTime(1))
-const roundOver = ref(false)
+const gameStated = ref(false)
+const roundOver = ref(true)
 const roundWon = ref(false)
 const cells = ref([])
 const available = ref([])
@@ -117,9 +119,11 @@ function startRound() {
   cells.value = createBoard(round.target)
   activeId.value = null
   stepRows.value = []
+  gameStated.value = true
   roundOver.value = false
   roundWon.value = false
   secondsLeft.value = roundTime(level.value)
+  selectCell(cells.value[1].id)
   startTimer()
 }
 
@@ -214,7 +218,7 @@ function continueGame() {
 }
 
 onMounted(() => {
-  startRound()
+  //startRound()
 })
 
 onUnmounted(() => {

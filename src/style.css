@@ -128,14 +128,16 @@ body {
   gap: 16px;
 }
 
-.expression-row,
+.expression-row, 
 .choice-bar {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: stretch;
   gap: 5px;
   overflow-x: auto;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .choice-bar {
@@ -218,7 +220,6 @@ body {
 }
 
 .steps-panel .expression-row {
-  justify-content: flex-start;
   overflow-x: auto;
   padding-bottom: 4px;
 }
