@@ -147,7 +147,7 @@ body {
 .expression-row {
   display: grid;
   grid-template-columns: repeat(4, 28px 64px);
-  row-gap: 6px;
+  row-gap: 2px;
 }
 
 .expression-target {
