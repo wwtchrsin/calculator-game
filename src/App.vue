@@ -3,16 +3,29 @@
     <header class="app-header">calculator game</header>
     <main class="app-main">
       <section class="status-panel">
-        <div class="level-label">Level {{ level }}</div>
-        <div class="score-bar" aria-label="Level score">
-          <span
-            v-for="n in 5"
-            :key="n"
-            class="score-pip"
-            :class="{ filled: n <= score }"
-          />
+        <div class="level-status">
+          <div class="level-label">Level {{ level }}</div>
+          <div class="score-bar" aria-label="Level score">
+            <span
+              v-for="n in 5"
+              :key="n"
+              class="score-pip"
+              :class="{ filled: n <= score }"
+            />
+          </div>
         </div>
-        <div class="timer-row">
+        <button
+          v-if="roundOver"
+          class="continue-btn"
+          type="button"
+          aria-label="Continue"
+          @click="continueGame"
+        >
+          <svg viewBox="0 0 86.6 100" aria-hidden="true">
+            <polygon points="0,0 86.6,50 0,100" />
+          </svg>
+        </button>
+        <div class="timer-container">
           <div
             v-if="gameStated"
             class="timer"
@@ -23,17 +36,6 @@
           >
             {{ formattedTime }}
           </div>
-          <button
-            v-if="roundOver"
-            class="continue-btn"
-            type="button"
-            aria-label="Continue"
-            @click="continueGame"
-          >
-            <svg viewBox="0 0 86.6 100" aria-hidden="true">
-              <polygon points="0,0 86.6,50 0,100" />
-            </svg>
-          </button>
         </div>
       </section>
 

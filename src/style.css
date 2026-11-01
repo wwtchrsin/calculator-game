@@ -44,13 +44,23 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 368px;
 }
 
 .status-panel {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 14px;
+  gap: 20px;
+  padding: 20px;
+  background-color: #334455;
+}
+
+.level-status {
+  display: flex;
+  flex-direction: column;
+  flex: 0;
+  align-items: center;
 }
 
 .level-label {
@@ -61,13 +71,12 @@ body {
 
 .score-bar {
   display: grid;
-  grid-template-columns: repeat(5, 42px);
+  grid-template-columns: repeat(5, 12px);
   gap: 8px;
 }
 
 .score-pip {
-  height: 18px;
-  border-radius: 4px;
+  height: 14px;
   background: #64748b;
   box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.25);
 }
@@ -76,17 +85,16 @@ body {
   background: #22c55e;
 }
 
-.timer-row {
+.timer-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  min-height: 64px;
+  flex-direction: row;
+  justify-content: end;
+  flex: 1;
 }
 
 .timer {
   font-variant-numeric: tabular-nums;
-  font-size: 40px;
+  font-size: 28px;
   font-weight: 700;
   letter-spacing: 0.06em;
 }
@@ -100,25 +108,27 @@ body {
 }
 
 .continue-btn {
-  width: 52px;
-  height: 52px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
   display: grid;
   place-items: center;
+  background-color: #3c9;
+  border-radius: 6px;
 }
 
 .continue-btn svg {
-  width: 36px;
-  height: 42px;
-  fill: #86efac;
+  width: 18px;
+  height: 21px;
+  fill: #eee;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
 }
 
 .continue-btn:hover svg {
-  fill: #bbf7d0;
+  fill: #fff;
 }
 
 .board-panel,
@@ -126,8 +136,6 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: 368px;
-  margin: 0 auto;
   gap: 12px;
 }
 
@@ -160,6 +168,7 @@ body {
   gap: 5px;
   padding: 28px;
   background-color: #223344;
+  height: 165px;
 }
 
 .cell {
