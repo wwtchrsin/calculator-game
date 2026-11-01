@@ -1,6 +1,6 @@
 export const NUMBER_COUNT = 6
 
-export function createBoard(target) {
+export function createBoard() {
   const cells = []
   for (let i = 0; i < NUMBER_COUNT; i += 1) {
     cells.push({
@@ -32,12 +32,6 @@ export function createBoard(target) {
     }
   }
   cells.push({ id: 'eq', type: 'equals', value: '=', interactive: false })
-  cells.push({
-    id: 'result',
-    type: 'result',
-    value: String(target),
-    interactive: false
-  })
   return cells
 }
 

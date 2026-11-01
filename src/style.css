@@ -43,7 +43,7 @@ body {
   padding: 24px 0 40px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 12px;
 }
 
 .status-panel {
@@ -125,23 +125,41 @@ body {
 .steps-panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-.expression-row, 
-.choice-bar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: stretch;
-  gap: 5px;
-  overflow-x: auto;
-  max-width: 400px;
+  box-sizing: border-box;
+  width: 368px;
   margin: 0 auto;
+  gap: 12px;
+}
+
+.steps-panel {
+  padding: 12px;
+  background-color: #223344;
+}
+
+.expression-row {
+  display: grid;
+  grid-template-columns: repeat(4, 28px 64px);
+  row-gap: 6px;
+}
+
+.expression-target {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ef4444;
+  height: 52px;
+  font-size: 28px;
+  letter-spacing: 4px;
 }
 
 .choice-bar {
-  min-height: 52px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(4, 64px);
+  justify-items: start;
+  gap: 5px;
+  padding: 28px;
+  background-color: #223344;
 }
 
 .cell {
@@ -149,33 +167,34 @@ body {
   color: #fff;
   font-size: 18px;
   font-weight: 700;
-  min-height: 52px;
-  min-width: 52px;
+  height: 52px;
+  width: 52px;
   padding: 0 6px;
-  border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.18);
-  flex: 0 0 auto;
 }
 
 .cell-thin,
 .cell.is-thin {
-  min-width: 28px;
   width: 28px;
   padding: 0;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .cell-number {
   background: #3b82f6;
-  min-width: 64px;
+  width: 64px;
 }
 
 .cell-op {
   background: #22c55e;
-  min-width: 48px;
+  width: 64px;
+}
+
+.cell-bracket {
+  background: #94a3b8;
+  width: 64px;
 }
 
 .cell-bracket,
@@ -185,12 +204,12 @@ body {
 
 .cell-equals {
   background: #eab308;
-  min-width: 48px;
+  width: 64px;
 }
 
 .cell-result {
   background: #ef4444;
-  min-width: 72px;
+  width: 64px;
 }
 
 .cell-del {
@@ -220,6 +239,8 @@ body {
 }
 
 .steps-panel .expression-row {
-  overflow-x: auto;
-  padding-bottom: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0;
 }
+

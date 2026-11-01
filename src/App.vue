@@ -39,6 +39,9 @@
 
       <section class="board-panel">
         <ExpressionRow :cells="cells" :active-id="activeId" @select="selectCell" />
+        <div class="expression-target">
+          {{ target }}
+        </div>
         <ChoiceBar
           :mode="choiceMode"
           :numbers="available"
@@ -73,6 +76,7 @@ const gameStated = ref(false)
 const roundOver = ref(true)
 const roundWon = ref(false)
 const cells = ref([])
+const target = ref(-1)
 const available = ref([])
 const activeId = ref(null)
 const stepRows = ref([])
@@ -116,8 +120,8 @@ function startRound() {
     numberSeq += 1
     return { id: `num-${numberSeq}`, value }
   })
-  cells.value = createBoard(round.target)
-  activeId.value = null
+  target.value = round.target
+  cells.value = createBoard()
   stepRows.value = []
   gameStated.value = true
   roundOver.value = false
@@ -157,8 +161,6 @@ function applyChoice(payload) {
   } else if (cell.type === 'op' || cell.type === 'bracket') {
     patchCell(cell.id, { value: payload })
   }
-
-  deactivate()
   afterEdit()
 }
 
@@ -170,7 +172,6 @@ function deleteActive() {
     available.value = [...available.value, { id: cell.sourceId, value: Number(cell.value) }]
   }
   patchCell(cell.id, { value: '', sourceId: null })
-  deactivate()
   afterEdit()
 }
 
@@ -181,7 +182,7 @@ function afterEdit() {
     return
   }
   stepRows.value = result.steps.map(stepToCells)
-  if (result.complete && result.value === Number(cells.value.find((cell) => cell.id === 'result')?.value)) {
+  if (result.complete && result.value === target.value) {
     finishRound(true)
   }
 }
@@ -216,10 +217,6 @@ function continueGame() {
   pendingShift.value = 0
   startRound()
 }
-
-onMounted(() => {
-  //startRound()
-})
 
 onUnmounted(() => {
   clearTimer()
