@@ -38,13 +38,23 @@ body {
 }
 
 .app-main {
-  width: min(1280px, calc(100% - 32px));
-  margin: 0 auto;
   padding: 24px 0 40px;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.main-panels,
+.steps-panel {
+  width: 344px;
+  margin: 0 auto;
+}
+
+.main-panels {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 368px;
 }
 
 .status-panel {
@@ -142,11 +152,12 @@ body {
 .steps-panel {
   padding: 12px;
   background-color: #223344;
+  min-height: 160px;
 }
 
 .expression-row {
   display: grid;
-  grid-template-columns: repeat(4, 28px 64px);
+  grid-template-columns: repeat(4, 28px 58px);
   row-gap: 2px;
 }
 
@@ -163,9 +174,9 @@ body {
 .choice-bar {
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(4, 64px);
+  grid-template-columns: repeat(4, 58px);
   justify-items: start;
-  gap: 5px;
+  gap: 12px;
   padding: 28px;
   background-color: #223344;
   height: 165px;
@@ -177,7 +188,7 @@ body {
   font-size: 18px;
   font-weight: 700;
   height: 52px;
-  width: 52px;
+  width: 58px;
   padding: 0 6px;
   display: inline-flex;
   align-items: center;
@@ -193,17 +204,14 @@ body {
 
 .cell-number {
   background: #3b82f6;
-  width: 64px;
 }
 
 .cell-op {
   background: #22c55e;
-  width: 64px;
 }
 
 .cell-bracket {
   background: #94a3b8;
-  width: 64px;
 }
 
 .cell-bracket,
@@ -213,17 +221,14 @@ body {
 
 .cell-equals {
   background: #eab308;
-  width: 64px;
 }
 
 .cell-result {
   background: #ef4444;
-  width: 64px;
 }
 
 .cell-del {
   background: #fb7185;
-  min-width: 64px;
   text-transform: lowercase;
 }
 
@@ -257,3 +262,8 @@ body {
   font-size: 16px;
 }
 
+@media (max-width: 800px) {
+  .app-main {
+    flex-direction: column;
+  }
+}

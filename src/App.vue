@@ -2,57 +2,58 @@
   <div class="app-shell">
     <header class="app-header">calculator game</header>
     <main class="app-main">
-      <section class="status-panel">
-        <div class="level-status">
-          <div class="level-label">Level {{ level }}</div>
-          <div class="score-bar" aria-label="Level score">
-            <span
-              v-for="n in 5"
-              :key="n"
-              class="score-pip"
-              :class="{ filled: n <= score }"
-            />
+      <div class="main-panels">
+        <section class="status-panel">
+          <div class="level-status">
+            <div class="level-label">Level {{ level }}</div>
+            <div class="score-bar" aria-label="Level score">
+              <span
+                v-for="n in 5"
+                :key="n"
+                class="score-pip"
+                :class="{ filled: n <= score }"
+              />
+            </div>
           </div>
-        </div>
-        <button
-          v-if="roundOver"
-          class="continue-btn"
-          type="button"
-          aria-label="Continue"
-          @click="continueGame"
-        >
-          <svg viewBox="0 0 86.6 100" aria-hidden="true">
-            <polygon points="0,0 86.6,50 0,100" />
-          </svg>
-        </button>
-        <div class="timer-container">
-          <div
-            v-if="gameStated"
-            class="timer"
-            :class="{
-              danger: (secondsLeft <= 10 && !roundOver) || (roundOver && !roundWon),
-              success: roundOver && roundWon
-            }"
+          <button
+            v-if="roundOver"
+            class="continue-btn"
+            type="button"
+            aria-label="Continue"
+            @click="continueGame"
           >
-            {{ formattedTime }}
+            <svg viewBox="0 0 86.6 100" aria-hidden="true">
+              <polygon points="0,0 86.6,50 0,100" />
+            </svg>
+          </button>
+          <div class="timer-container">
+            <div
+              v-if="gameStated"
+              class="timer"
+              :class="{
+                danger: (secondsLeft <= 10 && !roundOver) || (roundOver && !roundWon),
+                success: roundOver && roundWon
+              }"
+            >
+              {{ formattedTime }}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="board-panel" v-if="gameStated">
-        <ExpressionRow :cells="cells" :active-id="activeId" @select="selectCell" />
-        <div class="expression-target">
-          {{ target }}
-        </div>
-        <ChoiceBar
-          :mode="choiceMode"
-          :numbers="available"
-          @pick="applyChoice"
-          @del="deleteActive"
-        />
-      </section>
-
-      <section class="steps-panel" v-if="stepRows.length">
+        <section class="board-panel" v-if="gameStated">
+          <ExpressionRow :cells="cells" :active-id="activeId" @select="selectCell" />
+          <div class="expression-target">
+            {{ target }}
+          </div>
+          <ChoiceBar
+            :mode="choiceMode"
+            :numbers="available"
+            @pick="applyChoice"
+            @del="deleteActive"
+          />
+        </section>
+      </div>
+      <section class="steps-panel">
         <ExpressionRow
           v-for="(stepCells, index) in stepRows"
           :key="index"
