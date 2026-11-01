@@ -152,7 +152,6 @@ body {
 .steps-panel {
   padding: 12px;
   background-color: #223344;
-  min-height: 160px;
 }
 
 .expression-row {
@@ -265,5 +264,8 @@ body {
 @media (max-width: 800px) {
   .app-main {
     flex-direction: column;
+  }
+  .steps-panel {
+    min-height: 160px;
   }
 }
