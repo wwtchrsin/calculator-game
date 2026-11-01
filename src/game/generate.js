@@ -97,6 +97,47 @@ function makeNumbers() {
   return shuffle([...small, ...large])
 }
 
+function getCorrectAnswer(numbers, ops, spans) {
+  const cells = []
+  const openingBrackets = new Map()
+  const closingBrackets = new Map()
+  for ( let [start, end] of spans ) {
+    openingBrackets.set(start, "(")
+    closingBrackets.set(end, ")") 
+  }
+  for ( let i=0; i <= ops.length; i++ ) {
+    cells.push({
+      id: `bl-${i}`,
+      type: 'bracket',
+      value: openingBrackets.get(i) ?? "",
+      interactive: true
+    })
+    cells.push({
+      id: `n-${i}`,
+      type: 'number',
+      value: String(numbers[i]),
+      sourceId: null,
+      interactive: true
+    })
+    cells.push({
+      id: `br-${i}`,
+      type: 'bracket',
+      value: closingBrackets.get(i) ?? "",
+      interactive: true
+    })
+    if (i < ops.length) {
+      cells.push({
+        id: `op-${i}`,
+        type: 'op',
+        value: ops[i],
+        interactive: true
+      })
+    }
+  }
+  cells.push({ id: 'eq', type: 'equals', value: '=', interactive: false })
+  return cells
+}
+
 export function generateRound(maxAttempts = 8000) {
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     const numbers = makeNumbers()
@@ -104,13 +145,15 @@ export function generateRound(maxAttempts = 8000) {
     const kind = chooseParenKind()
     const spans = chooseSpans(kind)
     const expression = buildExpression(numbers, ops, spans)
+    const answer = getCorrectAnswer(numbers, ops, spans)
     const evaluated = evaluateText(expression)
     if (!evaluated.ok) continue
     if (evaluated.value < 100 || evaluated.value > 999) continue
     return {
-      numbers,
+      numbers: shaffleArray(numbers),
       target: evaluated.value,
       expression,
+      answer,
       kind
     }
   }
@@ -157,4 +200,12 @@ function generateSimpleFallback() {
 
 export function roundTime(level) {
   return 120 - (level - 1) * 10
+}
+
+function shaffleArray(arr) {
+  for ( let i = arr.length - 1; i >= 0; i-- ) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
 }

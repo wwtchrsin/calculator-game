@@ -26,6 +26,17 @@
               <polygon points="0,0 86.6,50 0,100" />
             </svg>
           </button>
+          <button
+            v-if="gameStated && roundOver && !roundWon"
+            class="correct-answer-btn"
+            type="button"
+            aria-label="Show Answer"
+            @click="toggleAnswer"
+            >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12.84,17.64q0.36-0.36 0.36-0.89t-0.36-0.89T11.95,15.5t-0.89,0.36q-0.36,0.36-0.36,0.89t0.36,0.89T11.95,18t0.89-0.36Zm-1.79-3.49H12.9q0-0.82 0.19-1.3t1.06-1.3q0.65-0.65 1.03-1.24T15.55,8.9q0-1.4-1.03-2.15T12.1,6Q10.68,6 9.79,6.75T8.55,8.55L10.2,9.2q0.13-0.45 0.56-0.97T12.1,7.7q0.8,0 1.2,0.44T13.7,9.1q0,0.5-0.3,0.94t-0.75,0.81q-1.1,0.97-1.35,1.47t-0.25,1.82ZM12,22q-2.07,0-3.9-0.79q-1.82-0.79-3.17-2.14Q3.58,17.73 2.79,15.9T2,12Q2,9.92 2.79,8.1Q3.58,6.27 4.93,4.93Q6.28,3.57 8.1,2.79Q9.93,2 12,2t3.9,0.79t3.17,2.14q1.35,1.35 2.14,3.17Q22,9.92 22,12t-0.79,3.9t-2.14,3.17q-1.35,1.35-3.17,2.14T12,22Zm0-2q3.35,0 5.68-2.32T20,12T17.68,6.32T12,4T6.33,6.32T4,12t2.33,5.68T12,20Zm0-8Z"/>
+            </svg>
+          </button>
           <div class="timer-container">
             <div
               v-if="gameStated"
@@ -78,12 +89,15 @@ const secondsLeft = ref(roundTime(1))
 const gameStated = ref(false)
 const roundOver = ref(true)
 const roundWon = ref(false)
+const correctAnswer = ref([])
+const userAnswer = ref([])
 const cells = ref([])
 const target = ref(-1)
 const available = ref([])
 const activeId = ref(null)
 const stepRows = ref([])
 const pendingShift = ref(0)
+const showCorrectAnswer = ref(false)
 
 let timerId = null
 let numberSeq = 0
@@ -125,11 +139,13 @@ function startRound() {
   })
   target.value = round.target
   cells.value = createBoard()
+  correctAnswer.value = round.answer
   stepRows.value = []
   gameStated.value = true
   roundOver.value = false
   roundWon.value = false
   secondsLeft.value = roundTime(level.value)
+  showCorrectAnswer.value = false
   selectCell(cells.value[1].id)
   startTimer()
 }
@@ -184,6 +200,7 @@ function afterEdit() {
 
 function finishRound(won) {
   if (roundOver.value) return
+  userAnswer.value = cells.value
   roundOver.value = true
   roundWon.value = won
   clearTimer()
@@ -211,6 +228,18 @@ function continueGame() {
   }
   pendingShift.value = 0
   startRound()
+}
+
+function toggleAnswer() {
+  if (showCorrectAnswer.value) {
+    showCorrectAnswer.value = false
+    cells.value = userAnswer.value
+    afterEdit()
+  } else {
+    showCorrectAnswer.value = true
+    cells.value = correctAnswer.value
+    afterEdit()
+  }
 }
 
 onUnmounted(() => {

@@ -117,12 +117,12 @@ body {
   color: #86efac;
 }
 
-.continue-btn {
+.continue-btn,
+.correct-answer-btn {
   width: 36px;
   height: 36px;
   padding: 0;
   border: 0;
-  background: transparent;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -130,14 +130,25 @@ body {
   border-radius: 6px;
 }
 
-.continue-btn svg {
+.correct-answer-btn {
+  background-color: #39c;
+}
+
+.continue-btn svg,
+.correct-answer-btn svg {
   width: 18px;
   height: 21px;
   fill: #eee;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
 }
 
-.continue-btn:hover svg {
+.correct-answer-btn svg {
+  width: 28px;
+  height: 32px;
+}
+
+.continue-btn:hover svg,
+.correct-answer-btn:hover svg {
   fill: #fff;
 }
 
