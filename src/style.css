@@ -244,3 +244,7 @@ body {
   row-gap: 0;
 }
 
+.steps-panel .cell {
+  font-size: 16px;
+}
+

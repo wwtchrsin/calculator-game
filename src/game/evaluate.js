@@ -301,3 +301,26 @@ export function stepToCells(step) {
   })
   return cells
 }
+
+export function excludeBracketCells(cells) {
+  const result = []
+  for ( let i=0; i < cells.length; i++ ) {
+    const steps = cells[i].slice(0)
+    console.log(steps)
+    for ( let j=1; j < steps.length && steps.length > 1; j++ ) {
+      if ( steps[j].type === "number" && steps[j-1].type === "bracket" ) {
+        steps[j] = { ...steps[j], value: `${steps[j-1].value}${steps[j].value}` }
+        steps.splice(j-1, 1)
+        j--
+      }
+      if ( steps[j].type === "bracket" && steps[j-1].type === "number" ) {
+        steps[j-1] = { ...steps[j-1], value: `${steps[j-1].value}${steps[j].value}` }
+        steps.splice(j, 1)
+        j--
+      }
+    }
+    result.push(steps)
+  }
+  console.log(result)
+  return result
+}

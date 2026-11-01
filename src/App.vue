@@ -37,7 +37,7 @@
         </div>
       </section>
 
-      <section class="board-panel">
+      <section class="board-panel" v-if="gameStated">
         <ExpressionRow :cells="cells" :active-id="activeId" @select="selectCell" />
         <div class="expression-target">
           {{ target }}
@@ -50,7 +50,7 @@
         />
       </section>
 
-      <section class="steps-panel">
+      <section class="steps-panel" v-if="stepRows.length">
         <ExpressionRow
           v-for="(stepCells, index) in stepRows"
           :key="index"
@@ -62,11 +62,11 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import ChoiceBar from './components/ChoiceBar.vue'
 import ExpressionRow from './components/ExpressionRow.vue'
 import { createBoard, formatTime } from './game/board.js'
-import { evaluateCells, stepToCells } from './game/evaluate.js'
+import { evaluateCells, stepToCells, excludeBracketCells } from './game/evaluate.js'
 import { generateRound, roundTime } from './game/generate.js'
 
 const level = ref(1)
@@ -138,10 +138,6 @@ function selectCell(id) {
   activeId.value = id
 }
 
-function deactivate() {
-  activeId.value = null
-}
-
 function patchCell(id, patch) {
   cells.value = cells.value.map((cell) => (cell.id === id ? { ...cell, ...patch } : cell))
 }
@@ -177,12 +173,8 @@ function deleteActive() {
 
 function afterEdit() {
   const result = evaluateCells(cells.value)
-  if (!result.ok) {
-    stepRows.value = result.steps.map(stepToCells)
-    return
-  }
-  stepRows.value = result.steps.map(stepToCells)
-  if (result.complete && result.value === target.value) {
+  stepRows.value = excludeBracketCells(result.steps.map(stepToCells))
+  if (result.ok && result.complete && result.value === target.value) {
     finishRound(true)
   }
 }
