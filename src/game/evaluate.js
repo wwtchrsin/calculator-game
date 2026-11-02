@@ -1,4 +1,4 @@
-export const OPS = ['+', '-', '*', '/']
+export const OPS = ['+', '-', 'x', '/']
 
 export function applyOp(left, op, right) {
   if (!Number.isInteger(left) || !Number.isInteger(right)) {
@@ -6,7 +6,7 @@ export function applyOp(left, op, right) {
   }
   if (op === '+') return { ok: true, value: left + right }
   if (op === '-') return { ok: true, value: left - right }
-  if (op === '*') return { ok: true, value: left * right }
+  if (op === 'x') return { ok: true, value: left * right }
   if (op === '/') {
     if (right === 0) return { ok: false, reason: 'divzero' }
     if (left % right !== 0) return { ok: false, reason: 'fraction' }
@@ -179,7 +179,7 @@ function parseExpression(tokens) {
   function parseTerm() {
     let left = parseFactor()
     if (!left.ok) return left
-    while (peek() && peek().type === 'op' && (peek().value === '*' || peek().value === '/')) {
+    while (peek() && peek().type === 'op' && (peek().value === 'x' || peek().value === '/')) {
       const op = consume().value
       const right = parseFactor()
       if (!right.ok) return right

@@ -5,7 +5,7 @@
       <div class="main-panels">
         <section class="status-panel">
           <div class="level-status">
-            <div class="level-label">Level {{ level }}</div>
+            <div class="level-label">L{{ level }}</div>
             <div class="score-bar" aria-label="Level score">
               <span
                 v-for="n in 5"

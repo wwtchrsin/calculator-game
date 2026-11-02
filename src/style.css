@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Audiowide";
+  src: url('./fonts/Audiowide-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color: #fff;
   font-family: "Segoe UI", "Trebuchet MS", sans-serif;
@@ -43,11 +51,12 @@ body {
 }
 
 .app-header .app-name {
-  font-size: 28px;
+  font-family: "Audiowide", "Segoe UI", "Trebuchet MS", sans-serif;
+  font-size: 24px;
   letter-spacing: 0.12em;
   text-transform: lowercase;
   font-weight: 700;
-  margin-top: -8px;
+  margin-top: -4px;
 }
 
 .app-main {
@@ -83,13 +92,17 @@ body {
   display: flex;
   flex-direction: column;
   flex: 0;
-  align-items: center;
+  gap: 8px;
+  
 }
 
 .level-label {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: 0.04em;
+  background-color: #64748b;
+  text-align: center;
+  padding: 4px;
 }
 
 .score-bar {
@@ -236,6 +249,7 @@ body {
 
 .cell-op {
   background: #22c55e;
+  font-size: 22px;
 }
 
 .cell-bracket {
@@ -249,6 +263,7 @@ body {
 
 .cell-equals {
   background: #eab308;
+  font-size: 22px;
 }
 
 .cell-result {
@@ -290,6 +305,11 @@ body {
   font-size: 16px;
 }
 
+.steps-panel .cell-op,
+.steps-panel .cell-equals {
+  font-size: 22px;
+}
+
 @media (max-width: 800px) {
   .app-main {
     flex-direction: column;
@@ -301,7 +321,7 @@ body {
 
 @media (max-width: 480px) {
   .app-header .app-name {
-    font-size: 24px;
-    margin-top: -7px;
+    font-size: 18px;
+    margin-top: -2px;
   }
 }

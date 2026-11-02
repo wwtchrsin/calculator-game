@@ -36,7 +36,7 @@ const items = computed(() => {
     }))
   }
   if (props.mode === 'op') {
-    return ['+', '-', '/', '*'].map((op) => ({
+    return ['+', '-', '/', 'x'].map((op) => ({
       id: op,
       value: op,
       label: op,
