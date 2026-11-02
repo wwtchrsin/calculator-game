@@ -27,14 +27,27 @@ body {
 }
 
 .app-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
   background: #111827;
   border-bottom: 2px solid #334155;
-  text-align: center;
   padding: 16px 24px;
+}
+
+.app-header svg {
+  height: 48px;
+  width: 48px;
+}
+
+.app-header .app-name {
   font-size: 28px;
   letter-spacing: 0.12em;
   text-transform: lowercase;
   font-weight: 700;
+  margin-top: -8px;
 }
 
 .app-main {
@@ -132,6 +145,10 @@ body {
 
 .correct-answer-btn {
   background-color: #39c;
+}
+
+.correct-answer-btn.inactive {
+  background-color: #579;
 }
 
 .continue-btn svg,
@@ -278,5 +295,12 @@ body {
   }
   .steps-panel {
     min-height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header .app-name {
+    font-size: 24px;
+    margin-top: -7px;
   }
 }

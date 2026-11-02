@@ -1,6 +1,6 @@
 <template>
   <div class="app-shell">
-    <header class="app-header">calculator game</header>
+    <AppHeader />
     <main class="app-main">
       <div class="main-panels">
         <section class="status-panel">
@@ -29,6 +29,7 @@
           <button
             v-if="gameStated && roundOver && !roundWon"
             class="correct-answer-btn"
+            :class="showCorrectAnswer ? 'inactive' : 'active'"
             type="button"
             aria-label="Show Answer"
             @click="toggleAnswer"
@@ -82,6 +83,7 @@ import ExpressionRow from './components/ExpressionRow.vue'
 import { createBoard, formatTime } from './game/board.js'
 import { evaluateCells, stepToCells, excludeBracketCells } from './game/evaluate.js'
 import { generateRound, roundTime } from './game/generate.js'
+import AppHeader from './components/AppHeader.vue'
 
 const level = ref(1)
 const score = ref(0)
