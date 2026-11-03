@@ -39,15 +39,15 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   background: #111827;
   border-bottom: 2px solid #334155;
   padding: 16px 24px;
 }
 
 .app-header svg {
-  height: 48px;
-  width: 48px;
+  height: 36px;
+  width: 36px;
 }
 
 .app-header .app-name {
