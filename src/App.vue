@@ -1,11 +1,17 @@
 <template>
   <div class="app-shell">
-    <AppHeader />
+    <AppHeader
+      :mode="mode"
+      :roundOver="roundOver"
+      @toggle-mode="toggleMode"
+    />
     <main class="app-main">
       <div class="main-panels">
         <section class="status-panel">
           <div class="level-status">
-            <div class="level-label">L{{ level }}</div>
+            <div class="level-label">
+              {{ mode === "hard" ? "H" : "N" }}{{ level }}
+            </div>
             <div class="score-bar" aria-label="Level score">
               <span
                 v-for="n in 5"
@@ -93,11 +99,13 @@
         </section>
       </div>
       <section class="steps-panel">
-        <ExpressionRow
-          v-for="(stepCells, index) in stepRows"
-          :key="index"
-          :cells="stepCells"
-        />
+        <template v-if="round">
+          <ExpressionRow
+            v-for="(stepCells, index) in stepRows"
+            :key="index"
+            :cells="stepCells"
+          />
+        </template>
       </section>
     </main>
   </div>
@@ -110,9 +118,10 @@ import ExpressionRow from './components/ExpressionRow.vue'
 import { createBoard, formatTime } from './game/board.js'
 import { evaluateCells, stepToCells, excludeBracketCells } from './game/evaluate.js'
 import { generateRound, roundTime } from './game/generate.js'
-import { loadData, saveData, getDefaultData } from './game/storage.js'
+import { loadData, saveData, saveMode } from './game/storage.js'
 import AppHeader from './components/AppHeader.vue'
 
+const mode = ref("normal")
 const level = ref(1)
 const score = ref(0)
 const secondsLeft = ref(roundTime(1))
@@ -168,20 +177,20 @@ function resetAvailable() {
 }
 
 function startRound() {
-  round.value = generateRound()
+  round.value = generateRound(mode.value)
   numberSeq = 0
   resetAvailable()
   target.value = round.value.target
-  cells.value = createBoard()
+  cells.value = createBoard(mode.value === "hard" ? [] : round.value.numbers)
   correctAnswer.value = round.value.answer
   stepRows.value = []
   roundOver.value = false
   roundWon.value = false
   secondsLeft.value = roundTime(level.value)
   showCorrectAnswer.value = false
-  selectCell(cells.value[1].id)
+  selectCell(mode.value === "hard" ? cells.value[1].id : cells.value[3].id)
   startTimer()
-  saveData({ 
+  saveData(mode.value, { 
     level: level.value,
     score: score.value,
     started: true,
@@ -255,7 +264,7 @@ function finishRound(won) {
     if (score.value < 0) pendingShift.value = -1
   }
 
-  saveData({ 
+  saveData(mode.value, { 
     level: level.value,
     score: score.value,
     started: false,
@@ -286,24 +295,27 @@ function toggleAnswer() {
   }
 }
 
+function toggleMode() {
+  mode.value = mode.value === "normal" ? "hard" : "normal"
+  saveMode(mode.value)
+  loadSave()
+  round.value = null
+}
+
 function giveUp() {
   finishRound(false)
 }
 
 function resetExpression() {
   if (!roundOver.value) {
-    const resetCells = [ ...cells.value ]
-    for ( let i=0; i < resetCells.length - 1; i++ ) {
-      resetCells[i].value = ""
-    }
-    cells.value = resetCells
+    cells.value = createBoard(mode.value === "hard" ? [] : round.value.numbers)
     resetAvailable()
     afterEdit()
-    selectCell(cells.value[1].id)
+    selectCell(mode.value === "hard" ? cells.value[1].id : cells.value[3].id)
   }
 }
 
-onMounted(() => {
+function loadSave() {
   const data = loadData()
   if (data.started) {
     if (data.score > 0) {
@@ -313,8 +325,13 @@ onMounted(() => {
       data.score = 5
     }
   }
+  mode.value = data.mode
   level.value = data.level
   score.value = data.score
+}
+
+onMounted(() => {
+  loadSave()
 })
 
 onUnmounted(() => {

@@ -138,7 +138,7 @@ function getCorrectAnswer(numbers, ops, spans) {
   return cells
 }
 
-export function generateRound(maxAttempts = 8000) {
+export function generateRound(mode, maxAttempts = 8000) {
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     const numbers = makeNumbers()
     const ops = Array.from({ length: 5 }, () => pick(OPS))
@@ -150,7 +150,7 @@ export function generateRound(maxAttempts = 8000) {
     if (!evaluated.ok) continue
     if (evaluated.value < 100 || evaluated.value > 999) continue
     return {
-      numbers: shaffleArray(numbers),
+      numbers: (mode === "hard" ? shaffleArray : n => n)(numbers),
       target: evaluated.value,
       expression,
       answer,
@@ -191,7 +191,7 @@ function generateSimpleFallback() {
     }
   }
   return {
-    numbers: [3, 8, 12, 25, 50, 75],
+    numbers: [75, 50, 25, 12, 8, 3],
     target: 173,
     expression: '75 + 50 + 25 + 12 + 8 + 3',
     kind: 'none'

@@ -59,5 +59,24 @@
         y="26.968243" />
     </svg>
     <div class="app-name">calculator game</div>
+    <button 
+      v-if="roundOver"
+      class="toggle-mode-btn is-interactive"
+      type="button"
+      aria-label="Toggle Mode"
+      @click="$emit('toggle-mode', $event)"
+    >
+      {{  mode === "hard" ? "H" : "N" }}
+    </button>
+
   </header>
 </template>
+
+<script setup>
+  defineProps({
+    mode: { type: String, required: true },
+    roundOver: { type: Boolean, required: true },
+  })
+
+  defineEmits(['toggle-mode'])
+</script>

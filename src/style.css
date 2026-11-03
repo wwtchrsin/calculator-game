@@ -67,6 +67,18 @@ body {
   gap: 12px;
 }
 
+.app-header .toggle-mode-btn {
+  background-color: #345;
+  color: white;
+  font-weight: 700;
+  padding: 6px 12px;
+  border: 0;
+  user-select: none;
+  font-family: "Audiowide", "Segoe UI", "Trebuchet MS", sans-serif;
+  font-size: 18px;
+  border-radius: 50%;
+}
+
 .main-panels,
 .steps-panel {
   width: 344px;
@@ -154,7 +166,7 @@ body {
   display: grid;
   place-items: center;
   background-color: #3c9;
-  border-radius: 6px;
+  border-radius: 50%;
 }
 
 .correct-answer-btn {
@@ -172,10 +184,14 @@ body {
 .continue-btn svg,
 .correct-answer-btn svg,
 .give-up-btn svg {
-  width: 18px;
-  height: 21px;
   fill: #eee;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.continue-btn svg {
+  width: 18px;
+  height: 21px;
+  margin-left: 4px;
 }
 
 .correct-answer-btn svg {
@@ -184,8 +200,8 @@ body {
 }
 
 .give-up-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .continue-btn:hover svg,
