@@ -16,6 +16,25 @@
             </div>
           </div>
           <button
+            v-if="!roundOver"
+            class="give-up-btn"
+            type="button"
+            aria-label="Give Up"
+            @click="giveUp"
+          >
+            <svg aria-hidden="true">
+              <g id="layer1">
+                <rect
+                  style="stroke-linecap:round;paint-order:fill markers stroke;stroke:none;fill-opacity:1"
+                  id="rect1"
+                  width="180"
+                  height="180"
+                  x="0"
+                  y="0" />
+              </g>
+            </svg>
+          </button>  
+          <button
             v-if="roundOver"
             class="continue-btn"
             type="button"
@@ -27,7 +46,7 @@
             </svg>
           </button>
           <button
-            v-if="gameStated && roundOver && !roundWon"
+            v-if="round && roundOver && !roundWon"
             class="correct-answer-btn"
             :class="showCorrectAnswer ? 'inactive' : 'active'"
             type="button"
@@ -40,7 +59,7 @@
           </button>
           <div class="timer-container">
             <div
-              v-if="gameStated"
+              v-if="round"
               class="timer"
               :class="{
                 danger: (secondsLeft <= 10 && !roundOver) || (roundOver && !roundWon),
@@ -52,10 +71,18 @@
           </div>
         </section>
 
-        <section class="board-panel" v-if="gameStated">
+        <section class="board-panel" v-if="round">
           <ExpressionRow :cells="cells" :active-id="activeId" @select="selectCell" />
-          <div class="expression-target">
-            {{ target }}
+          <div class="expression-target-row">
+            <div class="expression-target">
+              {{ target }}
+            </div>
+            <button
+              class="reset-btn is-interactive"
+              type="button"
+              aria-label="Reset"
+              @click="resetExpression"
+            >C</button>
           </div>
           <ChoiceBar
             :mode="choiceMode"
@@ -89,7 +116,7 @@ import AppHeader from './components/AppHeader.vue'
 const level = ref(1)
 const score = ref(0)
 const secondsLeft = ref(roundTime(1))
-const gameStated = ref(false)
+const round = ref(null)
 const roundOver = ref(true)
 const roundWon = ref(false)
 const correctAnswer = ref([])
@@ -133,18 +160,21 @@ function startTimer() {
   }, 1000)
 }
 
-function startRound() {
-  const round = generateRound()
-  numberSeq = 0
-  available.value = round.numbers.map((value) => {
+function resetAvailable() {
+  available.value = round.value.numbers.map((value) => {
     numberSeq += 1
     return { id: `num-${numberSeq}`, value }
   })
-  target.value = round.target
+}
+
+function startRound() {
+  round.value = generateRound()
+  numberSeq = 0
+  resetAvailable()
+  target.value = round.value.target
   cells.value = createBoard()
-  correctAnswer.value = round.answer
+  correctAnswer.value = round.value.answer
   stepRows.value = []
-  gameStated.value = true
   roundOver.value = false
   roundWon.value = false
   secondsLeft.value = roundTime(level.value)
@@ -253,6 +283,23 @@ function toggleAnswer() {
     showCorrectAnswer.value = true
     cells.value = correctAnswer.value
     afterEdit()
+  }
+}
+
+function giveUp() {
+  finishRound(false)
+}
+
+function resetExpression() {
+  if (!roundOver.value) {
+    const resetCells = [ ...cells.value ]
+    for ( let i=0; i < resetCells.length - 1; i++ ) {
+      resetCells[i].value = ""
+    }
+    cells.value = resetCells
+    resetAvailable()
+    afterEdit()
+    selectCell(cells.value[1].id)
   }
 }
 

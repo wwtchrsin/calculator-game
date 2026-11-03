@@ -3,7 +3,7 @@
     <button
       v-for="item in items"
       :key="item.id"
-      class="cell"
+      class="cell is-interactive"
       :class="item.className"
       type="button"
       @click="$emit('pick', item.value)"

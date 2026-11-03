@@ -144,7 +144,8 @@ body {
 }
 
 .continue-btn,
-.correct-answer-btn {
+.correct-answer-btn,
+.give-up-btn {
   width: 36px;
   height: 36px;
   padding: 0;
@@ -160,12 +161,17 @@ body {
   background-color: #39c;
 }
 
+.give-up-btn {
+  background-color: #fb7185;;
+}
+
 .correct-answer-btn.inactive {
   background-color: #579;
 }
 
 .continue-btn svg,
-.correct-answer-btn svg {
+.correct-answer-btn svg,
+.give-up-btn svg {
   width: 18px;
   height: 21px;
   fill: #eee;
@@ -177,8 +183,14 @@ body {
   height: 32px;
 }
 
+.give-up-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
 .continue-btn:hover svg,
-.correct-answer-btn:hover svg {
+.correct-answer-btn:hover svg,
+.give-up-btn:hover svg {
   fill: #fff;
 }
 
@@ -201,15 +213,21 @@ body {
   row-gap: 2px;
 }
 
+.expression-target-row {
+  display: flex;
+}
+
 .expression-target {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1;
   background-color: #ef4444;
   height: 52px;
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 4px;
+  user-select: none;
 }
 
 .choice-bar {
@@ -223,7 +241,8 @@ body {
   height: 165px;
 }
 
-.cell {
+.cell,
+.reset-btn {
   border: 0;
   color: #fff;
   font-size: 18px;
@@ -234,6 +253,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 
 .cell-thin,
@@ -275,6 +295,10 @@ body {
   text-transform: lowercase;
 }
 
+.reset-btn {
+  background: #334455;
+}
+
 .cell-number.is-active {
   background: #1d4ed8;
 }
@@ -287,7 +311,7 @@ body {
   background: #475569;
 }
 
-.cell.is-interactive {
+.is-interactive {
   cursor: pointer;
 }
 
