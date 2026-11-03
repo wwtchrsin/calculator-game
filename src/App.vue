@@ -77,12 +77,13 @@
 </template>
 
 <script setup>
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import ChoiceBar from './components/ChoiceBar.vue'
 import ExpressionRow from './components/ExpressionRow.vue'
 import { createBoard, formatTime } from './game/board.js'
 import { evaluateCells, stepToCells, excludeBracketCells } from './game/evaluate.js'
 import { generateRound, roundTime } from './game/generate.js'
+import { loadData, saveData, getDefaultData } from './game/storage.js'
 import AppHeader from './components/AppHeader.vue'
 
 const level = ref(1)
@@ -150,6 +151,11 @@ function startRound() {
   showCorrectAnswer.value = false
   selectCell(cells.value[1].id)
   startTimer()
+  saveData({ 
+    level: level.value,
+    score: score.value,
+    started: true,
+  })
 }
 
 function selectCell(id) {
@@ -218,6 +224,12 @@ function finishRound(won) {
     score.value -= 1
     if (score.value < 0) pendingShift.value = -1
   }
+
+  saveData({ 
+    level: level.value,
+    score: score.value,
+    started: false,
+  })
 }
 
 function continueGame() {
@@ -243,6 +255,20 @@ function toggleAnswer() {
     afterEdit()
   }
 }
+
+onMounted(() => {
+  const data = loadData()
+  if (data.started) {
+    if (data.score > 0) {
+      data.score--
+    } else if (data.level > 1) {
+      data.level--
+      data.score = 5
+    }
+  }
+  level.value = data.level
+  score.value = data.score
+})
 
 onUnmounted(() => {
   clearTimer()

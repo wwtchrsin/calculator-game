@@ -49,7 +49,7 @@ function makeBinary(left, op, right) {
 
 export function tokenize(text) {
   const tokens = []
-  const re = /\s+|\d+|[+\-*/()]/g
+  const re = /\s+|\d+|[+\-x/()]/g
   let last = 0
   let match
   while ((match = re.exec(text))) {
