@@ -274,7 +274,7 @@ export function findSubExpressions(cells) {
   let subExpressions = []
   let i = 0
   while (true) {
-    
+    console.log(i, cells[i+1].value, expressionStart < 0)
     if (expressionStart < 0) {
       if (i + 6 >= cells.length - 1) {
         break
@@ -294,10 +294,11 @@ export function findSubExpressions(cells) {
         subExpressions.push(cells.slice(expressionStart, expressionEnd + 1))
         expressionStart = -1
         expressionEnd = -1
+        i += 2
       } else {
         expressionEnd = i + 4
+        i += 4
       }
-      i += 2
     }
   }
   if (expressionStart > -1) {
@@ -350,7 +351,7 @@ export function stepToCells(step) {
   cells.push({
     id: 's-res',
     type: 'result',
-    value: String(step.result),
+    value: String(Math.max(Math.min(step.result, 9999), -9999)),
     interactive: false
   })
   return cells
