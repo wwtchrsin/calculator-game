@@ -70,6 +70,7 @@ export function tokenize(text) {
 
 export function tokensFromCells(cells) {
   const numberCells = cells.filter((cell) => cell.type === 'number')
+  const idShift = Number(numberCells[0].id.match(/^n-(\d+)$/)[1])
   const lastFilled = [...numberCells].reverse().find((cell) => cell.value !== '')
   if (!lastFilled) {
     return { ok: false, reason: 'empty', complete: false }
@@ -107,7 +108,7 @@ export function tokensFromCells(cells) {
   }
 
   for (let i = 0; i < lastNumberPos; i += 1) {
-    const opCell = cells.find((cell) => cell.id === `op-${i}`)
+    const opCell = cells.find((cell) => cell.id === `op-${i + idShift}`)
     if (!opCell || opCell.value === '') {
       return { ok: false, reason: 'missing-op', complete: false }
     }
@@ -246,10 +247,63 @@ export function evaluateTokens(tokens) {
 export function evaluateCells(cells) {
   const extracted = tokensFromCells(cells)
   if (!extracted.ok) {
-    return { ok: false, reason: extracted.reason, complete: false, steps: [] }
+    const subExpressions = findSubExpressions(cells)
+    let steps = []
+    for (let subExpression of subExpressions) {
+      const extracted = tokensFromCells(subExpression)
+      if (extracted.ok) {
+        const evaluated = evaluateTokens(extracted.tokens)
+        steps = [...steps, ...evaluated.steps]
+      } else {
+        const extracted = tokensFromCells(subExpression.slice(1, -1))
+        if (extracted.ok) {
+          const evaluated = evaluateTokens(extracted.tokens)
+          steps = [...steps, ...evaluated.steps]
+        }
+      }
+    }
+    return { ok: false, reason: extracted.reason, complete: false, steps }
   }
   const evaluated = evaluateTokens(extracted.tokens)
   return { ...evaluated, complete: true }
+}
+
+export function findSubExpressions(cells) {
+  let expressionStart = -1
+  let expressionEnd = -1
+  let subExpressions = []
+  let i = 0
+  while (true) {
+    
+    if (expressionStart < 0) {
+      if (i + 6 >= cells.length - 1) {
+        break
+      }
+      if (cells[i+1].value !== '' && cells[i+3].value !== '' && cells[i+5].value !== '') {
+        expressionStart = i
+        expressionEnd = i + 6
+        i += 6
+      } else {
+        i += 4
+      }
+    } else {
+      if (i + 4 >= cells.length - 1) {
+        break
+      }
+      if (cells[i+1].value === '' || cells[i+3].value === '') {
+        subExpressions.push(cells.slice(expressionStart, expressionEnd + 1))
+        expressionStart = -1
+        expressionEnd = -1
+      } else {
+        expressionEnd = i + 4
+      }
+      i += 2
+    }
+  }
+  if (expressionStart > -1) {
+    subExpressions.push(cells.slice(expressionStart, expressionEnd + 1))
+  }
+  return subExpressions
 }
 
 export function evaluateText(text) {
