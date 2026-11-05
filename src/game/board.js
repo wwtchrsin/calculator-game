@@ -5,7 +5,7 @@ export function createBoard(numbers = []) {
   for (let i = 0; i < NUMBER_COUNT; i += 1) {
     cells.push({
       id: `bl-${i}`,
-      type: 'bracket',
+      type: 'left-bracket',
       value: '',
       interactive: true
     })
@@ -18,7 +18,7 @@ export function createBoard(numbers = []) {
     })
     cells.push({
       id: `br-${i}`,
-      type: 'bracket',
+      type: 'right-bracket',
       value: '',
       interactive: true
     })

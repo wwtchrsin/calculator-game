@@ -149,7 +149,8 @@ const choiceMode = computed(() => {
   if (roundOver.value || !activeCell.value) return null
   if (activeCell.value.type === 'number') return 'number'
   if (activeCell.value.type === 'op') return 'op'
-  if (activeCell.value.type === 'bracket') return 'bracket'
+  if (activeCell.value.type === 'left-bracket') return 'left-bracket'
+  if (activeCell.value.type === 'right-bracket') return 'right-bracket'
   return null
 })
 
@@ -220,7 +221,7 @@ function applyChoice(payload) {
     }
     patchCell(cell.id, { value: String(picked.value), sourceId: picked.id })
     available.value = [...available.value.filter((item) => item.id !== picked.id), ...returned]
-  } else if (cell.type === 'op' || cell.type === 'bracket') {
+  } else if (cell.type === 'op' || cell.type === 'left-bracket' || cell.type === 'right-bracket') {
     patchCell(cell.id, { value: payload })
   }
   afterEdit()

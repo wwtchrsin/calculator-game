@@ -43,12 +43,20 @@ const items = computed(() => {
       className: 'cell-op'
     }))
   }
-  if (props.mode === 'bracket') {
-    return ['(', ')'].map((bracket) => ({
-      id: bracket,
+  if (props.mode === 'left-bracket') {
+    return ['('].map((bracket) => ({
+      id: "bracket",
       value: bracket,
       label: bracket,
-      className: 'cell-bracket'
+      className: 'cell-left-bracket'
+    }))
+  }
+  if (props.mode === 'right-bracket') {
+    return [')'].map((bracket) => ({
+      id: "bracket",
+      value: bracket,
+      label: bracket,
+      className: 'cell-right-bracket'
     }))
   }
   return []

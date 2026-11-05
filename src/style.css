@@ -288,11 +288,13 @@ body {
   font-size: 22px;
 }
 
-.cell-bracket {
+.cell-left-bracket,
+.cell-right-bracket {
   background: #94a3b8;
 }
 
-.cell-bracket,
+.cell-left-bracket,
+.cell-right-bracket,
 .cell-pad {
   background: #94a3b8;
 }
@@ -323,7 +325,8 @@ body {
   background: #15803d;
 }
 
-.cell-bracket.is-active {
+.cell-left-bracket.is-active,
+.cell-right-bracket.is-active {
   background: #475569;
 }
 

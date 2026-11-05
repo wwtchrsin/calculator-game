@@ -28,7 +28,8 @@ const props = defineProps({
 const emit = defineEmits(['select'])
 
 const isThin = computed(() => {
-  return props.cell.type === 'bracket' || props.cell.type === 'pad'
+  return props.cell.type === 'left-bracket' || props.cell.type === 'right-bracket' || 
+  props.cell.type === 'pad'
 })
 
 const displayValue = computed(() => {

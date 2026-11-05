@@ -108,7 +108,7 @@ function getCorrectAnswer(numbers, ops, spans) {
   for ( let i=0; i <= ops.length; i++ ) {
     cells.push({
       id: `bl-${i}`,
-      type: 'bracket',
+      type: 'left-bracket',
       value: openingBrackets.get(i) ?? "",
       interactive: true
     })
@@ -121,7 +121,7 @@ function getCorrectAnswer(numbers, ops, spans) {
     })
     cells.push({
       id: `br-${i}`,
-      type: 'bracket',
+      type: 'right-bracket',
       value: closingBrackets.get(i) ?? "",
       interactive: true
     })

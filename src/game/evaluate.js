@@ -97,7 +97,7 @@ export function tokensFromCells(cells) {
       break
     }
     if (cell.type === 'number') break
-    if (cell.type === 'bracket' && cell.value !== '') {
+    if (cell.type === 'right-bracket' && cell.value !== '') {
       range.push(cell)
     }
   }
@@ -116,10 +116,10 @@ export function tokensFromCells(cells) {
 
   const tokens = []
   for (const cell of range) {
-    if (cell.type === 'bracket' && cell.value) {
-      if (cell.value === '(') tokens.push({ type: 'lparen' })
-      else if (cell.value === ')') tokens.push({ type: 'rparen' })
-      else return { ok: false, reason: 'bracket' }
+    if (cell.type === 'left-bracket' && cell.value) {
+      tokens.push({ type: 'lparen' })
+    } if (cell.type === 'right-bracket' && cell.value) {
+      tokens.push({ type: 'rparen' })
     } else if (cell.type === 'number' && cell.value !== '') {
       tokens.push({ type: 'num', value: Number(cell.value) })
     } else if (cell.type === 'op' && cell.value !== '') {
@@ -336,11 +336,19 @@ export function stepToCells(step) {
         interactive: false
       })
       o += 1
-    } else if (token.type === 'lparen' || token.type === 'rparen') {
+    } else if (token.type === 'lparen') {
       cells.push({
         id: `s-b-${b}`,
-        type: 'bracket',
-        value: token.type === 'lparen' ? '(' : ')',
+        type: 'left-bracket',
+        value: '(',
+        interactive: false
+      })
+      b += 1
+    } else if (token.type === 'rparen') {
+      cells.push({
+        id: `s-b-${b}`,
+        type: 'right-bracket',
+        value: ')',
         interactive: false
       })
       b += 1
@@ -361,12 +369,12 @@ export function excludeBracketCells(cells) {
   for ( let i=0; i < cells.length; i++ ) {
     const steps = cells[i].slice(0)
     for ( let j=1; j < steps.length && steps.length > 1; j++ ) {
-      if ( steps[j].type === "number" && steps[j-1].type === "bracket" ) {
+      if ( steps[j].type === "number" && steps[j-1].type === "left-bracket" ) {
         steps[j] = { ...steps[j], value: `${steps[j-1].value}${steps[j].value}` }
         steps.splice(j-1, 1)
         j--
       }
-      if ( steps[j].type === "bracket" && steps[j-1].type === "number" ) {
+      if ( steps[j].type === "right-bracket" && steps[j-1].type === "number" ) {
         steps[j-1] = { ...steps[j-1], value: `${steps[j-1].value}${steps[j].value}` }
         steps.splice(j, 1)
         j--
