@@ -12,6 +12,7 @@ export function getDefaultData() {
 export function loadData() {
   const mode = localStorage.getItem(STORAGE_ENTRY) ?? ""
   if (mode !== "normal" && mode !== "hard") {
+    localStorage.setItem(STORAGE_ENTRY, "normal")
     return getDefaultData()
   }
   try {
