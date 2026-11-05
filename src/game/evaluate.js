@@ -274,7 +274,6 @@ export function findSubExpressions(cells) {
   let subExpressions = []
   let i = 0
   while (true) {
-    console.log(i, cells[i+1].value, expressionStart < 0)
     if (expressionStart < 0) {
       if (i + 6 >= cells.length - 1) {
         break
