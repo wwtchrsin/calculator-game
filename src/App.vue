@@ -329,6 +329,8 @@ function loadSave() {
   mode.value = data.mode
   level.value = data.level
   score.value = data.score
+  currentLevel.value = level.value
+  currentScore.value = score.value
 }
 
 onMounted(() => {
