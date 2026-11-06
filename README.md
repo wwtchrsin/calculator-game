@@ -24,10 +24,8 @@ Building the Web app:
 npm run build 
 # output files in the dist directory
 ```
-Building Linux binaries on Linux  
-(You can also use the following command to build 
-Windows binaries on Windows if you allow the system user
-to create symbolic links):
+Building Linux binaries on Linux (You can also use the following command to build 
+Windows binaries on Windows if you allow the system user to create symbolic links):
 ```bash
 npm run electron:build
 # binaries in the release directory
