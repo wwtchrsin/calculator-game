@@ -1,5 +1,5 @@
 # Calculator Game
-Calculator Game is a game where you need to build an expression that equals a given
+Calculator Game is a game where you need to find an expression that equals a given
 target number by placing operations ('+', '-', '*', '/'), numbers and, optionally,
 parentheses. The gameplay loosely resembles the arithmetic tasks in the show Countdown.
 The game has two difficulty levels: Normal and Hard. On Normal level, you are given
