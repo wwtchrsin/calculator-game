@@ -10,14 +10,14 @@
         <section class="status-panel">
           <div class="level-status">
             <div class="level-label">
-              {{ mode === "hard" ? "H" : "N" }}{{ level }}
+              {{ mode === "hard" ? "H" : "N" }}{{ currentLevel }}
             </div>
             <div class="score-bar" aria-label="Level score">
               <span
                 v-for="n in 5"
                 :key="n"
                 class="score-pip"
-                :class="{ filled: n <= score }"
+                :class="{ filled: n <= currentScore }"
               />
             </div>
           </div>
@@ -45,7 +45,7 @@
             class="continue-btn"
             type="button"
             aria-label="Continue"
-            @click="continueGame"
+            @click="startRound"
           >
             <svg viewBox="0 0 86.6 100" aria-hidden="true">
               <polygon points="0,0 86.6,50 0,100" />
@@ -124,6 +124,8 @@ import AppHeader from './components/AppHeader.vue'
 const mode = ref("normal")
 const level = ref(1)
 const score = ref(0)
+const currentLevel = ref(1)
+const currentScore = ref(0)
 const secondsLeft = ref(roundTime(1))
 const round = ref(null)
 const roundOver = ref(true)
@@ -135,7 +137,6 @@ const target = ref(-1)
 const available = ref([])
 const activeId = ref(null)
 const stepRows = ref([])
-const pendingShift = ref(0)
 const showCorrectAnswer = ref(false)
 
 let timerId = null
@@ -189,6 +190,8 @@ function startRound() {
   roundWon.value = false
   secondsLeft.value = roundTime(level.value)
   showCorrectAnswer.value = false
+  currentLevel.value = level.value
+  currentScore.value = score.value
   selectCell(mode.value === "hard" ? cells.value[1].id : cells.value[3].id)
   startTimer()
   saveData(mode.value, { 
@@ -256,13 +259,22 @@ function finishRound(won) {
 
   if (won) {
     score.value += 1
-    if (score.value >= 5 && level.value < 10) pendingShift.value = 1
-    if (score.value > 5) score.value = 5
-  } else if (level.value === 1) {
-    score.value = Math.max(0, score.value - 1)
+    currentScore.value = Math.min(score.value, 5)
+    if (score.value >= 5 && level.value < 10) {
+      score.value = 0
+      level.value += 1
+    } else if (score.value > 5) {
+      score.value = 5
+    }
   } else {
     score.value -= 1
-    if (score.value < 0) pendingShift.value = -1
+    currentScore.value = Math.max(score.value, 0)
+    if (score.value < 0 && level.value > 1) {
+      score.value = 5
+      level.value -= 1
+    } else if (score.value < 0) {
+      score.value = 0
+    }
   }
 
   saveData(mode.value, { 
@@ -270,18 +282,6 @@ function finishRound(won) {
     score: score.value,
     started: false,
   })
-}
-
-function continueGame() {
-  if (pendingShift.value === 1) {
-    level.value += 1
-    score.value = 0
-  } else if (pendingShift.value === -1) {
-    level.value -= 1
-    score.value = 0
-  }
-  pendingShift.value = 0
-  startRound()
 }
 
 function toggleAnswer() {
