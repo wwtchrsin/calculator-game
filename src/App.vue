@@ -270,7 +270,7 @@ function finishRound(won) {
     score.value -= 1
     currentScore.value = Math.max(score.value, 0)
     if (score.value < 0 && level.value > 1) {
-      score.value = 5
+      score.value = 4
       level.value -= 1
     } else if (score.value < 0) {
       score.value = 0
